@@ -11,6 +11,10 @@ import {
 } from 'react-native';
 import Svg, { Polygon } from 'react-native-svg';
 
+const dimensions = Dimensions.get('window');
+const dimWidth = dimensions.width;
+const dimHeight = dimensions.height;
+
 const AnimatedPolygon = Animated.createAnimatedComponent(Polygon);
 
 class CustomCrop extends Component {
@@ -180,173 +184,141 @@ class CustomCrop extends Component {
     }
 
     render() {
-
         return (
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+            }}
+          >
             <View
-                style={{
-                    height: this.state.viewHeight,
-                    width: this.state.viewWidth,
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                }}
+              style={[
+                s(this.props).cropContainer,
+                { height: this.state.viewHeight },
+              ]}
             >
+              <Image
+                style={[
+                  s(this.props).image,
+                  { height: this.state.viewHeight },
+                ]}
+                resizeMode="contain"
+                source={{ uri: this.state.image }}
+              />
+              <Svg
+                height={this.state.viewHeight}
+                width={dimWidth}
+                style={{ position: 'absolute', left: 0, top: 0 }}
+              >
+                <AnimatedPolygon
+                  ref={(ref) => (this.polygon = ref)}
+                  fill={this.props.overlayColor}
+                  fillOpacity={this.props.overlayOpacity || 0.5}
+                  stroke={this.props.overlayStrokeColor}
+                  points={this.state.overlayPositions}
+                  strokeWidth={this.props.overlayStrokeWidth || 3}
+                />
+              </Svg>
+              <Animated.View
+                {...this.panResponderTopLeft.panHandlers}
+                style={[
+                  this.state.topLeft.getLayout(),
+                  s(this.props).handler,
+                ]}
+              >
                 <View
-                    style={[
-                        s(this.props).cropContainer,
-                        { height: this.state.viewHeight },
-                    ]}
-                >
-                    <Image
-                        style={[
-                            s(this.props).image,
-                            { height: this.state.viewHeight },
-                        ]}
-                        resizeMode="contain"
-                        source={{ uri: this.state.image }}
-                    />
-                    <Svg
-                        height={this.state.viewHeight}
-                        width={this.state.viewWidth}
-                        style={{ position: 'absolute', left: 0, top: 0 }}
-                    >
-                        <AnimatedPolygon
-                            ref={(ref) => (this.polygon = ref)}
-                            fill={this.props.overlayColor || 'blue'}
-                            fillOpacity={this.props.overlayOpacity || 0.5}
-                            stroke={this.props.overlayStrokeColor || 'blue'}
-                            points={this.state.overlayPositions}
-                            strokeWidth={this.props.overlayStrokeWidth || 3}
-                        />
-                    </Svg>
-                    <Animated.View
-                        {...this.panResponderTopLeft.panHandlers}
-                        style={[
-                            this.state.topLeft.getLayout(),
-                            s(this.props).handler,
-                        ]}
-                    >
-                        <View
-                            style={[
-                                s(this.props).handlerI,
-                                { left: 0, top: 0 },
-                            ]}
-                        />
-                        <View
-                            style={[
-                                s(this.props).handlerRound,
-                                { left: 50, top: 50 },
-                            ]}
-                        />
-                        <View
-                            style={[
-                                s(this.props).handlerRoundOuter,
-                                { left: 30, top: 30 },
-                            ]}
-                        />
-                    </Animated.View>
-                    <>
-                        <Animated.View
-                            {...this.panResponderTopRight.panHandlers}
-                            style={[
-                                this.state.topRight.getLayout(),
-                                s(this.props).handler,
-                            ]}
-                        >
-                            <View
-                                style={[
-                                    s(this.props).handlerI,
-                                    { left: 0, top: 0 },
-                                ]}
-                            />
-                            <View
-                                style={[
-                                    s(this.props).handlerRound,
-                                    { left: 51, bottom: 51 },
-                                ]}
-                            />
-                            <View
-                                style={[
-                                    s(this.props).handlerRoundOuter,
-                                    { left: 30, bottom: 30 },
-                                ]}
-                            />
-                        </Animated.View>
-                        <Animated.View
-                            {...this.panResponderBottomLeft.panHandlers}
-                            style={[
-                                this.state.bottomLeft.getLayout(),
-                                s(this.props).handler,
-                            ]}
-                        >
-                            <View
-                                style={[
-                                    s(this.props).handlerI,
-                                    { left: 0, top: 0 },
-                                ]}
-                            />
-                            <View
-                                style={[
-                                    s(this.props).handlerRound,
-                                    { right: 47, top: 50 },
-                                ]}
-                            />
-                            <View
-                                style={[
-                                    s(this.props).handlerRoundOuter,
-                                    { right: 30, top: 30 },
-                                ]}
-                            />
-                        </Animated.View>
-                    </>
-                    <Animated.View
-                        {...this.panResponderBottomRight.panHandlers}
-                        style={[
-                            this.state.bottomRight.getLayout(),
-                            s(this.props).handler,
-                        ]}
-                    >
-                        <View
-                            style={[
-                                s(this.props).handlerI,
-                                { left: 0, top: 0 },
-                            ]}
-                        />
-                        <View
-                            style={[
-                                s(this.props).handlerRound,
-                                { right: 47, bottom: 53 },
-                            ]}
-                        />
-                        <View
-                            style={[
-                                s(this.props).handlerRoundOuter,
-                                { right: 27, bottom: 33 },
-                            ]}
-                        />
-                    </Animated.View>
-                </View>
+                  style={[
+                    s(this.props).handlerI,
+                    { left: -10, top: -10 },
+                  ]}
+                />
+                <View
+                  style={[
+                    s(this.props).handlerRound,
+                    { left: 31, top: 31 },
+                  ]}
+                />
+              </Animated.View>
+              <Animated.View
+                {...this.panResponderTopRight.panHandlers}
+                style={[
+                  this.state.topRight.getLayout(),
+                  s(this.props).handler,
+                ]}
+              >
+                <View
+                  style={[
+                    s(this.props).handlerI,
+                    { left: 10, top: -10 },
+                  ]}
+                />
+                <View
+                  style={[
+                    s(this.props).handlerRound,
+                    { right: 31, top: 31 },
+                  ]}
+                />
+              </Animated.View>
+              <Animated.View
+                {...this.panResponderBottomLeft.panHandlers}
+                style={[
+                  this.state.bottomLeft.getLayout(),
+                  s(this.props).handler,
+                ]}
+              >
+                <View
+                  style={[
+                    s(this.props).handlerI,
+                    { left: -10, top: 10 },
+                  ]}
+                />
+                <View
+                  style={[
+                    s(this.props).handlerRound,
+                    { left: 31, bottom: 31 },
+                  ]}
+                />
+              </Animated.View>
+              <Animated.View
+                {...this.panResponderBottomRight.panHandlers}
+                style={[
+                  this.state.bottomRight.getLayout(),
+                  s(this.props).handler,
+                ]}
+              >
+                <View
+                  style={[
+                    s(this.props).handlerI,
+                    { left: 10, top: 10 },
+                  ]}
+                />
+                <View
+                  style={[
+                    s(this.props).handlerRound,
+                    { right: 31, bottom: 31 },
+                  ]}
+                />
+              </Animated.View>
             </View>
+          </View>
         );
-    }
+      }
 }
 
 const s = (props) => ({
     handlerI: {
-        borderRadius: 50,
-        height: 10,
-        width: 0,
+        borderRadius: 0,
+        height: 20,
+        width: 20,
         backgroundColor: props.handlerColor || 'blue',
-        zIndex: 9999
     },
     handlerRound: {
-        width: 31.2,
+        width: 39,
         position: 'absolute',
-        height: 29.6,
+        height: 39,
         borderRadius: 100,
         backgroundColor: props.handlerColor || 'blue',
-        zIndex: 9999,
-        borderWidth: 2,
-        borderColor: props.borderColor || 'blue'
     },
     handlerRoundOuter: {
         width: 70.2,
