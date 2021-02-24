@@ -74,7 +74,7 @@ public class RNCustomCropModule extends ReactContextBaseJavaModule {
     Point bl = new Point(points.getMap("bottomLeft").getDouble("x"), points.getMap("bottomLeft").getDouble("y"));
     Point br = new Point(points.getMap("bottomRight").getDouble("x"), points.getMap("bottomRight").getDouble("y"));
 
-    Mat src = Imgcodecs.imread(imageUri.replace("file://", ""), Imgproc.COLOR_BGR2RGB);
+    Mat src = Imgcodecs.imread(imageUri.replace("file://", ""));
     Imgproc.cvtColor(src, src, Imgproc.COLOR_BGR2RGB);
 
     boolean ratioAlreadyApplied = tr.x * (src.size().width / 500) < src.size().width;
@@ -109,7 +109,7 @@ public class RNCustomCropModule extends ReactContextBaseJavaModule {
     Utils.matToBitmap(doc, bitmap);
 
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-    bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 99, byteArrayOutputStream);
     byte[] byteArray = byteArrayOutputStream.toByteArray();
 
     WritableMap map = Arguments.createMap();
